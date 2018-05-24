@@ -2,6 +2,7 @@
     session_start();
     if(!(isset($_SESSION["usuario"])))
       header("location: index.php");
+    $Empresa = $_SESSION["empresa"];
     $mensaje = "";
     $mensaje1 = "";
     if(isset($_POST["submit"]))
@@ -15,8 +16,11 @@
       $Sena = $_POST["Sena"];
       $Vendedor = $_POST["Vendedor"];
       $FormaPago = $_POST["FormaPago"];
+      $Valor = $_POST["Valor"];
 
-      $SQLarticulosingresados = "SELECT * FROM articulos WHERE (Nombre LIKE '%$Articulo%') AND (Color LIKE '%$Color%')";
+
+
+      $SQLarticulosingresados = "SELECT * FROM articulos WHERE (Nombre LIKE '%$Articulo%') AND (Color LIKE '%$Color%') AND (empresa LIKE '$Empresa') AND (Valor LIKE '$Valor')";
       $articulosingresados = mysqli_query($idCone, $SQLarticulosingresados);
       $validaArticulo = FALSE;
       
@@ -36,7 +40,7 @@
       }
       mysqli_free_result($articulosingresados);
 
-      $SQLcodigoingresado = "SELECT Codigo FROM clientes";
+      $SQLcodigoingresado = "SELECT Codigo FROM clientes WHERE (empresa LIKE '$Empresa')";
       $codigoingresado = mysqli_query($idCone, $SQLcodigoingresado);
       $validaCodigo = FALSE;
       while($F = mysqli_fetch_array($codigoingresado))
@@ -49,7 +53,7 @@
       }
       mysqli_free_result($codigoingresado);
 
-      $SQLcant = "SELECT Nombre, Cantidad, Color  FROM articulos WHERE (Nombre LIKE '%$Articulo%') AND (Color LIKE '%$Color%')";
+      $SQLcant = "SELECT Nombre, Cantidad, Color  FROM articulos WHERE (Nombre LIKE '%$Articulo%') AND (Color LIKE '%$Color%') AND (Valor LIKE '$Valor') AND (empresa LIKE '$Empresa')";
       $cant = mysqli_query($idCone, $SQLcant);
       while($F = mysqli_fetch_array($cant))
       {
@@ -65,8 +69,8 @@
 
       if( ($validaCodigo == TRUE) AND ($validaArticulo == TRUE) )
       {
-        $SQL = "UPDATE articulos SET cantidad = $cantidad WHERE (Codigo LIKE '$CodMueble')";
-        $SQL1 = "INSERT INTO cobro(FechaEntrega,FormaPago,Sena,CodCliente,Vendedor,CodMueble) VALUES('$FechaEntrega','$FormaPago','$Sena','$NumeroDocumento','$Vendedor','$CodMueble')";
+        $SQL = "UPDATE articulos SET cantidad = $cantidad WHERE (Codigo LIKE '$CodMueble') AND (Empresa LIKE '$Empresa')";
+        $SQL1 = "INSERT INTO cobro(FechaEntrega,FormaPago,Sena,CodCliente,Vendedor,CodMueble,Empresa) VALUES('$FechaEntrega','$FormaPago','$Sena','$NumeroDocumento','$Vendedor','$CodMueble','$Empresa')";
       }
       else
       {
@@ -197,22 +201,29 @@
       <div class="col-xs-3">
         <input class="form-control" type="date" id="FechaEntrega" name="FechaEntrega" required>
       </div>
-      </div>  
-      <br>
-      <div class="row">
-          <div class="col-xs-2">
+        <div class="col-xs-2">
             <label for = "Articulo" class = "control-label" style="color:white">Articulo:</label> 
-          </div>
+        </div>
           <div class="col-xs-3">
             <input class="form-control" type="text" id="Articulo" name="Articulo" placeholder="Articulo" required> 
           </div>
-
+      </div>  
+      <br>
+      <div class="row">
           <div class="col-xs-2"> 
             <label for = "Color" class = "control-label" style="color:white">Color:</label>   
           </div>
           <div class="col-xs-3">
              <input class="form-control" type="text" id="Color" placeholder="Color" name="Color" required>
           </div>
+
+          <div class="col-xs-2">
+            <label for = "Valor" class = "control-label" style="color:white">Valor:</label> 
+          </div>
+          <div class="col-xs-3">
+            <input class="form-control" type="text" id="Valor" name="Valor" placeholder="Valor del artículo" required> 
+          </div>
+
       </div>
       <br>
       <div class="row">

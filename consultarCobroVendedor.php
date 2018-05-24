@@ -2,21 +2,22 @@
   session_start();
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
+  $Empresa = $_SESSION["empresa"];
   require("conexion.php");
   $idCone = conexion();
 
 
-  $SQL = "SELECT cobro.Numero, cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre, articulos.Color, articulos.Valor, articulos.Codigo  FROM cobro INNER JOIN articulos ON cobro.CodMueble = articulos.Codigo ORDER BY cobro.Numero";
+  $SQL = "SELECT cobro.Numero, cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre, articulos.Color, articulos.Valor, articulos.Codigo  FROM cobro INNER JOIN articulos ON cobro.CodMueble = articulos.Codigo WHERE (cobro.Empresa LIKE '$Empresa') AND (articulos.Empresa LIKE '$Empresa') ORDER BY cobro.Numero";
 
-  $SQL1 = "SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo ORDER BY cobro.Numero";
+  $SQL1 = "SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (clientes.Empresa LIKE '$Empresa') AND (cobro.Empresa LIKE '$Empresa') ORDER BY cobro.Numero";
 
   if(isset($_POST["submit"]))
     {
       $Vendedor = $_POST["Vendedor"];
 
-      $SQL = "SELECT cobro.Numero, cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre, articulos.Color, articulos.Valor, articulos.Codigo  FROM cobro INNER JOIN articulos ON cobro.CodMueble = articulos.Codigo WHERE (cobro.Vendedor LIKE '%$Vendedor%') ORDER BY cobro.Numero ";
+      $SQL = "SELECT cobro.Numero, cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre, articulos.Color, articulos.Valor, articulos.Codigo  FROM cobro INNER JOIN articulos ON cobro.CodMueble = articulos.Codigo WHERE (cobro.Vendedor LIKE '%$Vendedor%') AND (cobro.Empresa LIKE '$Empresa') AND (articulos.Empresa LIKE '$Empresa') ORDER BY cobro.Numero ";
 
-      $SQL1 = "SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono, cobro.Numero FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (cobro.Vendedor LIKE '%$Vendedor%') ORDER BY cobro.Numero ";
+      $SQL1 = "SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono, cobro.Numero FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (cobro.Vendedor LIKE '%$Vendedor%') AND (cobro.Empresa LIKE '$Empresa') AND (clientes.Empresa LIKE '$Empresa') ORDER BY cobro.Numero ";
 
     }
     
