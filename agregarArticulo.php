@@ -11,8 +11,9 @@
       $Cantidad = $_POST["Cantidad"];
       $Color = $_POST["Color"];
       $Valor = $_POST["Valor"];
+      $Empresa = $_SESSION["empresa"];
 
-      $SQLValidation = "SELECT * FROM articulos WHERE (Nombre LIKE '$Nombre') AND (Color LIKE '$Color') AND (Valor LIKE '$Valor')";
+      $SQLValidation = "SELECT * FROM articulos WHERE (Nombre LIKE '$Nombre') AND (Color LIKE '$Color') AND (Valor LIKE '$Valor') AND (Empresa LIKE '$Empresa')";
       $validation = mysqli_query($idCone,$SQLValidation);
       $cont = 0;
       while($Fila = mysqli_fetch_array($validation))
@@ -21,16 +22,16 @@
       }
       if($cont > 0)
       {
-        $RegistroCantidad = mysqli_query($idCone,"SELECT cantidad FROM articulos WHERE (Nombre LIKE '$Nombre') AND (Color LIKE '$Color') AND (Valor LIKE '$Valor')");
+        $RegistroCantidad = mysqli_query($idCone,"SELECT cantidad FROM articulos WHERE (Nombre LIKE '$Nombre') AND (Color LIKE '$Color') AND (Valor LIKE '$Valor') AND (Empresa LIKE '$Empresa')");
         while($Fila = mysqli_fetch_array($RegistroCantidad))
         {
           $NuevaCantidad = $Fila["cantidad"] + $Cantidad;
         }
-        $SQL = "UPDATE articulos SET cantidad='$NuevaCantidad' WHERE (Nombre LIKE '$Nombre') AND (Color LIKE '$Color')";
+        $SQL = "UPDATE articulos SET cantidad='$NuevaCantidad' WHERE (Nombre LIKE '$Nombre') AND (Color LIKE '$Color') AND (Empresa LIKE '$Empresa')";
       }
       else
       {
-        $SQL = "INSERT INTO articulos(nombre,cantidad,color,valor) VALUES('$Nombre','$Cantidad','$Color','$Valor')";
+        $SQL = "INSERT INTO articulos(nombre,cantidad,color,valor,empresa) VALUES('$Nombre','$Cantidad','$Color','$Valor','$Empresa')";
       }
       if(mysqli_query($idCone,$SQL))
       {

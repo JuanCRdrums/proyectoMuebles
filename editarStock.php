@@ -2,7 +2,8 @@
   session_start();
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
-  $SQL1 = "SELECT * FROM articulos";
+  $Empresa = $_SESSION["empresa"];
+  $SQL1 = "SELECT * FROM articulos WHERE (empresa LIKE '$Empresa')";
   $SQL2 = "";
   $mensaje = "";
   require("conexion.php");
@@ -13,17 +14,17 @@
       $Color = $_POST["Color"];
       if($Color != "" and $Nombre != "")
       {
-        $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (color LIKE '%$Color%')";
+        $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (color LIKE '%$Color%') AND (empresa LIKE '$Empresa')";
       }
       else
       {
         if($Nombre == "")
         {
-          $SQL1 = "SELECT * FROM articulos WHERE (color LIKE '%$Color%')";
+          $SQL1 = "SELECT * FROM articulos WHERE (color LIKE '%$Color%') AND (empresa LIKE '$Empresa')";
         }
         else
         {
-          $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%')";
+          $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (empresa LIKE '$Empresa')";
         }
       }
     }
@@ -35,7 +36,7 @@
       $Valor = $_REQUEST["Valor"];
 
 
-      $SQL2 = "UPDATE articulos SET cantidad='$Cantidad' WHERE (nombre LIKE '$Nombre') AND (color LIKE '$Color') AND (valor LIKE '$Valor')";
+      $SQL2 = "UPDATE articulos SET cantidad='$Cantidad' WHERE (nombre LIKE '$Nombre') AND (color LIKE '$Color') AND (valor LIKE '$Valor') AND (empresa LIKE '$Empresa')";
       if(mysqli_query($idCone,$SQL2))
       {
         $mensaje = "Artículo editado con éxito";

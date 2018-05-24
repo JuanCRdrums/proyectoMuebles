@@ -2,24 +2,25 @@
   session_start();
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
-  $SQL = "SELECT * FROM articulos";
+  $Empresa = $_SESSION["empresa"];
+  $SQL = "SELECT * FROM articulos WHERE (empresa LIKE '$Empresa')";
     if(isset($_POST["submit"]))
     {
       $Nombre = $_POST["Nombre"];
       $Color = $_POST["Color"];
       if($Color != "" and $Nombre != "")
       {
-        $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (color LIKE '%$Color%')";
+        $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (color LIKE '%$Color%') AND (empresa LIKE '$Empresa')";
       }
       else
       {
         if($Nombre == "")
         {
-          $SQL = "SELECT * FROM articulos WHERE (color LIKE '%$Color%')";
+          $SQL = "SELECT * FROM articulos WHERE (color LIKE '%$Color%') AND (empresa LIKE '$Empresa')";
         }
         else
         {
-          $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%')";
+          $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (empresa LIKE '$Empresa')";
         }
       }
     }

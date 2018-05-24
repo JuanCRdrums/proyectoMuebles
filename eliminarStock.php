@@ -2,13 +2,14 @@
 
   session_start();
   if(!(isset($_SESSION["usuario"])))
-  header("location: index.php");
+    header("location: index.php");
 
+  $Empresa = $_SESSION["empresa"];
   $mensaje = "";
   require("conexion.php");
   $idCone = conexion();
   $Numero=$_REQUEST['Numero'];
-  $SQL = "DELETE FROM articulos WHERE Codigo LIKE $Numero ";
+  $SQL = "DELETE FROM articulos WHERE (Codigo LIKE $Numero) AND (empresa LIKE '$Empresa')";
   $Registro = mysqli_query($idCone,$SQL);
   if(mysqli_query($idCone,$SQL))
   {
@@ -24,7 +25,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Eliminar Abono</title>
+  <title>Eliminar Artículo</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
