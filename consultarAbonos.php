@@ -5,12 +5,15 @@
     if(!(isset($_SESSION["usuario"])))
       header("location: index.php");
 
+  $Empresa = $_SESSION["empresa"];
 
-  if(isset($_POST["submit"]))
+  $SQL = "SELECT * FROM abonos WHERE (Empresa LIKE '$Empresa')";
+
+  if(isset($_POST["submit"]) and $_POST["Numero"] != "")
   {
     $Numero = $_POST["Numero"];
 
-    $SQL = "SELECT Fecha, Abono, Saldo, CodCobro, Codigo FROM abonos WHERE (CodCobro LIKE $Numero)";
+    $SQL = "SELECT * FROM abonos WHERE (CodCobro LIKE $Numero) AND (Empresa LIKE '$Empresa')";
 
   }
 
@@ -140,10 +143,7 @@
 
       <tbody>
         <?php
-        $cont = 0;
-        if(isset($_POST["submit"]))
-        { 
-
+ 
           $Registro = mysqli_query($idCone, $SQL);    
           while($Fila = mysqli_fetch_array($Registro))
           {
@@ -157,10 +157,6 @@
            
                         
           }
-
-          mysqli_free_result($Registro);
-          mysqli_close($idCone);
-        }
         ?>
       </tbody>
 

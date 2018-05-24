@@ -3,12 +3,12 @@
   session_start();
   if(!(isset($_SESSION["usuario"])))
   header("location: index.php");
-
+  $Empresa = $_SESSION["empresa"];
   $mensaje = "";
   require("conexion.php");
   $idCone = conexion();
   $Numero=$_REQUEST['Numero'];
-  $SQL = "DELETE FROM abonos WHERE Codigo LIKE $Numero ";
+  $SQL = "DELETE FROM abonos WHERE (Codigo LIKE $Numero) AND (Empresa LIKE '$Empresa') ";
   $Registro = mysqli_query($idCone,$SQL);
   if(mysqli_query($idCone,$SQL))
   {
