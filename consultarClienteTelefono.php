@@ -2,11 +2,12 @@
   session_start();
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
-  $SQL = "SELECT * FROM clientes";
+  $Empresa = $_SESSION["empresa"];
+  $SQL = "SELECT * FROM clientes WHERE (empresa LIKE '$Empresa')";
     if(isset($_POST["submit"]))
     {
      $Telefono = $_POST["Telefono"];
-      $SQL = "SELECT * FROM clientes WHERE (Telefono LIKE '%$Telefono%')";
+      $SQL = "SELECT * FROM clientes WHERE (Telefono LIKE '%$Telefono%') AND (empresa LIKE '$Empresa')";
     }
 ?>
 

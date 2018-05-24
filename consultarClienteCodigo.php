@@ -2,18 +2,19 @@
   session_start();
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
-  $SQL = "SELECT * FROM clientes";
+  $Empresa = $_SESSION["empresa"];
+  $SQL = "SELECT * FROM clientes WHERE (Empresa LIKE '$Empresa')";
     if(isset($_POST["submit"]))
     {
      $Codigo = $_POST["Codigo"];
-      $SQL = "SELECT * FROM clientes WHERE (Codigo LIKE '%$Codigo%')";
+      $SQL = "SELECT * FROM clientes WHERE (Codigo LIKE '%$Codigo%') AND (Empresa LIKE '$Empresa')";
     }
 
     
     if(isset($_REQUEST["Codigo"]))
     {
      $Codigo = $_REQUEST["Codigo"];
-      $SQL = "SELECT * FROM clientes WHERE (Codigo LIKE '%$Codigo%')";
+      $SQL = "SELECT * FROM clientes WHERE (Codigo LIKE '%$Codigo%') AND (Empresa LIKE '$Empresa')";
     }
 ?>
 

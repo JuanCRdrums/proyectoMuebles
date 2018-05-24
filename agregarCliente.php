@@ -3,6 +3,7 @@
     if(!(isset($_SESSION["usuario"])))
       header("location: index.php");
     $mensaje = "";
+    $Empresa = $_SESSION["empresa"];
     if(isset($_POST["submit"]))
     {
       require("conexion.php");
@@ -11,7 +12,7 @@
       $Nombre = $_POST["Nombre"];
       $Direccion = $_POST["Direccion"];
       $Telefono = $_POST["Telefono"];
-      $SQL = "INSERT INTO clientes(Codigo,Nombre,Direccion,Telefono) VALUES('$Codigo','$Nombre','$Direccion','$Telefono')";
+      $SQL = "INSERT INTO clientes(Codigo,Nombre,Direccion,Telefono,Empresa) VALUES('$Codigo','$Nombre','$Direccion','$Telefono','$Empresa')";
       if(mysqli_query($idCone,$SQL))
       {
         $mensaje = "Cliente ingresado con exito";
