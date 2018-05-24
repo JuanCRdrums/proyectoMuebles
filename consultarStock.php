@@ -9,13 +9,19 @@
       $Color = $_POST["Color"];
       if($Color != "" and $Nombre != "")
       {
-        $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '$Nombre') AND (color LIKE '$Color')";
+        $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (color LIKE '%$Color%')";
       }
       else
       {
-        $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '$Nombre') OR (color LIKE '$Color')";
+        if($Nombre == "")
+        {
+          $SQL = "SELECT * FROM articulos WHERE (color LIKE '%$Color%')";
+        }
+        else
+        {
+          $SQL = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%')";
+        }
       }
-
     }
 ?>
 

@@ -13,11 +13,18 @@
       $Color = $_POST["Color"];
       if($Color != "" and $Nombre != "")
       {
-        $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '$Nombre') AND (color LIKE '$Color')";
+        $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%') AND (color LIKE '%$Color%')";
       }
       else
       {
-        $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '$Nombre') OR (color LIKE '$Color')";
+        if($Nombre == "")
+        {
+          $SQL1 = "SELECT * FROM articulos WHERE (color LIKE '%$Color%')";
+        }
+        else
+        {
+          $SQL1 = "SELECT * FROM articulos WHERE (nombre LIKE '%$Nombre%')";
+        }
       }
     }
     if(isset($_POST["submit2"]))
@@ -25,9 +32,10 @@
       $Cantidad = $_POST["Cantidad"];
       $Nombre = $_POST["Nombre"];
       $Color = $_POST["Color"];
+      $Valor = $_REQUEST["Valor"];
 
 
-      $SQL2 = "UPDATE articulos SET cantidad='$Cantidad' WHERE (nombre LIKE '$Nombre') AND (color LIKE '$Color')";
+      $SQL2 = "UPDATE articulos SET cantidad='$Cantidad' WHERE (nombre LIKE '$Nombre') AND (color LIKE '$Color') AND (valor LIKE '$Valor')";
       if(mysqli_query($idCone,$SQL2))
       {
         $mensaje = "Artículo editado con éxito";
@@ -178,7 +186,7 @@
           {
             echo "<tr class='active'>";
             echo "<td>";
-            echo "<form class='form-inline' action='editarStock' method='post'>";
+            echo "<form class='form-inline' action='editarStock.php?Valor=$Fila[Valor]' method='post'>";
             echo "<div class='form-group'>";
             echo "<input type='text' name='Nombre' value='$Fila[Nombre]' readonly>";
             echo "<td>";
