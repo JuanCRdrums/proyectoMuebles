@@ -3,6 +3,7 @@
     if(!(isset($_SESSION["usuario"])))
       header("location: index.php");
     $mensaje = "";
+    $Empresa = $_SESSION["empresa"];
     if(isset($_POST["submit"]))
     {
       require("conexion.php");
@@ -16,12 +17,12 @@
       $FormaPago = $_POST["FormaPago"];
       $Vendedor = $_POST["Vendedor"];
 
-      $SQL2 = "SELECT * FROM clientes WHERE Codigo LIKE '$CodCliente' ";
+      $SQL2 = "SELECT * FROM clientes WHERE (Codigo LIKE '$CodCliente') AND (Empresa LIKE '$Empresa') ";
       $Registro2 = mysqli_query($idCone,$SQL2);
       $Fila2 = mysqli_fetch_array($Registro2);
       if(sizeof($Fila2)>0)
       {
-        $SQL = "INSERT INTO preventa(ValorMueble,FechaEntrega,Color,Articulo,CodCliente,Sena,FormaPago,Vendedor) VALUES('$ValorMueble','$FechaEntrega','$Color','$Articulo','$CodCliente','$Sena','$FormaPago','$Vendedor')";
+        $SQL = "INSERT INTO preventa(ValorMueble,FechaEntrega,Color,Articulo,CodCliente,Sena,FormaPago,Vendedor,Empresa) VALUES('$ValorMueble','$FechaEntrega','$Color','$Articulo','$CodCliente','$Sena','$FormaPago','$Vendedor','$Empresa')";
         if(mysqli_query($idCone,$SQL))
         {
           $mensaje = "Preventa ingresada con exito";
@@ -160,7 +161,7 @@
             <label for = "CodCliente" class = "control-label" style="color:white">Codigo del cliente:</label> 
           </div>
           <div class="col-xs-3">
-            <input class="form-control" type="number" id="CodCliente" name="CodCliente" placeholder="Codigo del cliente" required> 
+            <input class="form-control" type="text" id="CodCliente" name="CodCliente" placeholder="Codigo del cliente" required> 
           </div>
           <div class="col-xs-2"> 
             <label for = "Sena" class = "control-label" style="color:white">Seña:</label>   

@@ -4,15 +4,16 @@
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
   
-  $SQL = "SELECT * FROM preventa inner join clientes on preventa.CodCliente=clientes.Codigo";
+  $Empresa = $_SESSION["empresa"];
+
+  $SQL = "SELECT * FROM preventa inner join clientes on preventa.CodCliente=clientes.Codigo WHERE (preventa.Empresa LIKE '$Empresa') AND (clientes.Empresa LIKE '$Empresa')";
   
     if(isset($_POST["submit"]))
     {
       
       $Telefono = $_POST["Telefono"];
       
-      $SQL = "SELECT * FROM preventa inner join clientes on preventa.CodCliente=clientes.Codigo WHERE clientes.Telefono LIKE '%$Telefono%'";
-     
+      $SQL = "SELECT * FROM preventa inner join clientes on preventa.CodCliente=clientes.Codigo WHERE (clientes.Telefono LIKE '%$Telefono%') AND (preventa.Empresa LIKE '$Empresa') AND (clientes.Empresa LIKE '$Empresa') ";
     }
 ?>
 
