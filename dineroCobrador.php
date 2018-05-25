@@ -1,14 +1,16 @@
 <?php
-	$SQL = "SELECT cobro.Numero, abonos.Fecha, abonos.Abono, cobro.CodCliente FROM cobro INNER JOIN abonos ON cobro.Numero = abonos.CodCobro ORDER BY cobro.Numero";
+	
     session_start();
     if(!(isset($_SESSION["usuario"])))
       header("location: index.php");
+    $Empresa = $_SESSION["empresa"];
+    $SQL = "SELECT cobro.Numero, abonos.Fecha, abonos.Abono, cobro.CodCliente FROM cobro INNER JOIN abonos ON cobro.Numero = abonos.CodCobro WHERE (cobro.Empresa LIKE '$Empresa') AND (abonos.Empresa LIKE '$Empresa') ORDER BY cobro.Numero";
   if(isset($_POST["submit"]))
   {
 	  	$fecha = $_POST["fecha"];
 	  	if(isset($_POST["fecha"]))
 	  	{
-	  		$SQL = "SELECT cobro.Numero, abonos.Fecha, abonos.Abono, cobro.CodCliente FROM cobro INNER JOIN abonos ON cobro.Numero = abonos.CodCobro WHERE (abonos.Fecha LIKE '$fecha') ORDER BY cobro.numero";
+	  		$SQL = "SELECT cobro.Numero, abonos.Fecha, abonos.Abono, cobro.CodCliente FROM cobro INNER JOIN abonos ON cobro.Numero = abonos.CodCobro WHERE (abonos.Fecha LIKE '$fecha') AND (cobro.Empresa LIKE '$Empresa') AND (abonos.Empresa LIKE '$Empresa') ORDER BY cobro.numero";
 	  	}
   }
 ?>
@@ -151,7 +153,7 @@
       				echo "<td>$Fila[Fecha]</td>";
       				echo "<td>$Fila[Abono]</td>";
       				echo "<td>$Fila[CodCliente]</td>";
-      				$Registro2 = mysqli_query($idCone,"SELECT Nombre FROM clientes WHERE (Codigo LIKE '$Fila[CodCliente]')");
+      				$Registro2 = mysqli_query($idCone,"SELECT Nombre FROM clientes WHERE (Codigo LIKE '$Fila[CodCliente]') AND (Empresa LIKE '$Empresa') ");
       				while($Fila1 = mysqli_fetch_array($Registro2))
       				{
       					echo "<td>$Fila1[Nombre]</td>";

@@ -2,17 +2,18 @@
   session_start();
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
+  $Empresa = $_SESSION["empresa"];
   require("conexion.php");
   $idCone = conexion();
 
 
-  $SQL = "SELECT cobro.Numero , cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre as nombreArticulo, articulos.Color, articulos.Valor, articulos.Codigo as codigoArticulo, clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono from abonos inner join cobro on abonos.CodCobro = cobro.Numero inner join articulos on abonos.CodMueble = articulos.Codigo inner join clientes on cobro.CodCliente=clientes.Codigo Where abonos.Saldo=0";
+  $SQL = "SELECT cobro.Numero , cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre as nombreArticulo, articulos.Color, articulos.Valor, articulos.Codigo as codigoArticulo, clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono from abonos inner join cobro on abonos.CodCobro = cobro.Numero inner join articulos on abonos.CodMueble = articulos.Codigo inner join clientes on cobro.CodCliente=clientes.Codigo Where (abonos.Saldo=0) AND (cobro.Empresa LIKE '$Empresa') AND (abonos.Empresa LIKE '$Empresa') AND (clientes.Empresa LIKE '$Empresa') ";
 
   if(isset($_POST["submit"]))
     {
       $Numero = $_POST["Numero"];
 
-      $SQL = "SELECT cobro.Numero , cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre AS nombreArticulo, articulos.Color, articulos.Valor, articulos.Codigo AS codigoArticulo, clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono FROM abonos INNER JOIN  cobro ON abonos.CodCobro = cobro.Numero INNER JOIN  articulos ON abonos.CodMueble = articulos.Codigo INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (abonos.Saldo LIKE '0' and cobro.Numero LIKE '$Numero')";
+      $SQL = "SELECT cobro.Numero , cobro.FechaEntrega, cobro.FormaPago, cobro.Sena, cobro.Vendedor, articulos.Nombre AS nombreArticulo, articulos.Color, articulos.Valor, articulos.Codigo AS codigoArticulo, clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono FROM abonos INNER JOIN  cobro ON abonos.CodCobro = cobro.Numero INNER JOIN  articulos ON abonos.CodMueble = articulos.Codigo INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (abonos.Saldo LIKE '0') and (cobro.Numero LIKE '$Numero') AND (abonos.Saldo=0) AND (cobro.Empresa LIKE '$Empresa') AND (abonos.Empresa LIKE '$Empresa') AND (clientes.Empresa LIKE '$Empresa') ";
 
       
 

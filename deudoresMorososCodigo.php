@@ -3,17 +3,17 @@
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
   
-
+  $Empresa = $_SESSION["empresa"];
   
-  $SQL1="SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono, cobro.Numero FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo ORDER BY cobro.Numero";
+  $SQL1="SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono, cobro.Numero FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (clientes.Empresa LIKE '$Empresa') AND (cobro.Empresa LIKE '$Empresa') ORDER BY cobro.Numero";
  
   $SQL3="SELECT * from abonos where Saldo<=0";
   if(isset($_POST["submit"]))
   {
     $Codigo = $_POST["Codigo"];
-    $SQL1="SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono, cobro.Numero FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (clientes.Codigo LIKE '%$Codigo%') ORDER BY cobro.Numero";
+    $SQL1="SELECT clientes.Codigo, clientes.Nombre, clientes.Direccion, clientes.Telefono, cobro.Numero FROM cobro INNER JOIN clientes ON cobro.CodCliente = clientes.Codigo WHERE (clientes.Codigo LIKE '%$Codigo%') AND (clientes.Empresa LIKE '$Empresa') AND (cobro.Empresa LIKE '$Empresa') ORDER BY cobro.Numero";
     
-    $SQL3="SELECT * from abonos where Saldo<=0";
+    $SQL3="SELECT * from abonos where (Saldo<=0) AND (Empresa LIKE '$Empresa')";
 
   }
 
