@@ -1,35 +1,42 @@
-
 <?php
   session_start();
   if(!(isset($_SESSION["usuario"])))
     header("location: index.php");
+  $Empresa = $_SESSION["empresa"];
+  require("conexion.php");
+  $idCone = conexion();
+
+  $SQL = "SELECT * FROM cobro WHERE Empresa LIKE '$Empresa'";
+  $SQL2 = "SELECT * FROM abonos WHERE Empresa LIKE '$Empresa'";
+
+    if(isset($_POST["submit"]))
+    {
+      $fechaInicio = $_POST["fechaInicio"];
+      $fechaTermina = $_POST["fechaTermina"];
+      $SQL = "SELECT * FROM cobro WHERE FechaEntrega BETWEEN '$fechaInicio' AND '$fechaTermina' AND Empresa LIKE '$Empresa'";
+      $SQL2 = "SELECT * FROM abonos WHERE Fecha BETWEEN '$fechaInicio' AND '$fechaTermina' AND Empresa LIKE '$Empresa'";
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <link rel="apple-touch-icon" href="http://example.com/images/apple-touch-icon.png" />
-
-  <title>Inicio</title>
+  <title>Consultar Stock</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 </head>
-
- 
-<body background="fondo.jpg" >
-
-
+<body background="fondo.jpg">
   <div class='container'>
     <br>
-      <h1 align="center" style="color:white" font-face="Bombard_">C R E D I M U E B L E S</h1>
+      <h1 align="center" style="color:white">C R E D I M U E B L E S</h1>
       <br>
       <div class="row">
         <div class="col-xs-9">
@@ -45,7 +52,7 @@
 <nav class="navbar navbar-default" >
   <div class="container-fluid">
     <ul class="nav navbar-nav" >
-      <li class="active"><a href="inicio.php"><dt>Inicio</dt></a></li>
+      <li><a href="inicio.php"><dt>Inicio</dt></a></li>
             <li><a href="agregarArticulo.php"><dt>Agregar Artículo</dt></a></li>
             <li><a href="editarStock.php "><dt>Editar Stock</dt></a></li>
             <li><a href="consultarStock.php"><dt>Consultar Stock</dt></a></li>
@@ -96,72 +103,78 @@
                   <li><a href="deudoresMorososTelefono.php">Teléfono</a></li>                     
                 </ul>
             </li>
-            <li><a href="caja.php"><dt>Caja</dt></a></li>      
+            <li class="active"><a href="caja.php"><dt>Caja</dt></a></li>      
         </ul>    
     
   </div>
 </nav> 
 
-  
-  	 
-      <?php
-        echo "<h2 style='color:white'>Bienvenido, $_SESSION[usuario]</h2>";
-      ?>
-      <h2 style="color:grey">¿Qué desea hacer? </h2> 
+  <br><br>
+  <h2 style="color:grey">CAJA</h2>
+  <p style="color:white">Ingrese las fechas a consultar</p>
 
-      <table>
-      
+      <form class="form-horizontal" role = "form" method = "post" action="caja.php">
+
+        <div class="row">
+            <div class="col-xs-2">
+              <label for = "fechaInicio" class = "control-label" style="color:white">Fecha Incio:</label> 
+            </div>
+            <div class="col-xs-3">
+              <input class="form-control" type="date" id="fechaInicio" name="fechaInicio"> 
+            </div>
+            <div class="col-xs-2">
+              <label for = "fechaTermina" class = "control-label" style="color:white">Fecha Termina:</label> 
+            </div>
+            <div class="col-xs-3">
+              <input class="form-control" type="date" id="fechaTermina" name="fechaTermina"> 
+            </div>
+        </div>
+        <br>
+        <div class = "row">
+          <div class="col-xs-6" align="center">
+            <input type="submit"  class="btn btn-primary" id="submit" name="submit" value="Buscar">
+          </div>
+        </div>
+      </form>
+
+
+    <table class = "table table-condensed">
+      <thead>
 
         <tr>
-          <th><a href="agregarArticulo.php"><font style="color:white" size="4">Agregar artículo</font></a></th>
+          <th style="color:white">Sena</th>
         </tr>
-        <tr>
-          <th><a href="editarStock.php "><font style="color:white" size="4">Editar stock</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="consultarStock.php"><font style="color:white" size="4">Consultar stock</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="agregarCobro.php"><font style="color:white"size="4">Agregar cobro</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="consultarCobroCodigo.php"><font style="color:white" size="4">Consultar cobro</font></a></th>
-        </tr>
-        <tr>  
-          <th style="color:white"><a href="consultarAbonos.php"><font style="color:white" size="4">Consultar Abonos</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="agregarPreventa.php"><font style="color:white" size="4">Agregar preventa</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="consultarPreventaCodigo.php"><font style="color:white" size="4">Consultar preventa</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="agregarCliente.php"><font style="color:white" size="4">Agregar cliente</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="consultarClienteCodigo.php"><font style="color:white" size="4">Consultar Cliente</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="cuentasTerminadas.php"><font style="color:white" size="4">Cuentas Terminadas</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="dineroCobrador.php"><font style="color:white" size="4">Cobrador</font></a></th>
-        </tr>
-        <tr>  
-          <th><a href="deudoresMorososCodigo.php"><font style="color:white" size="4">Deudores Morosos</font></a></th>
-        </tr>
-    
+      </thead>
+
+      <tbody>
+        <?php
+       
+
+          $C=0;
+          $Registro2 = mysqli_query($idCone,$SQL2);
+          while($Fila = mysqli_fetch_array($Registro2))
+          {
+            $C = $C + "$Fila[Abono]";            
+          }
+          mysqli_free_result($Registro2);
+          /*echo "<br>";
+          echo "<br>";
+          echo "fecha ini";
+          echo "$fechaInicio";
+          echo "<br>";
+          echo "fecha final";
+          echo "$fechaTermina";
+          echo "<br>";*/
+          echo "los cobros son: " ;
+          echo "$C";
+          
+          mysqli_close($idCone);
+        ?>
+      </tbody>
 
     </table>
-      
-     
-
-	   </div>
-     </div>
-
-		
-<br><br>
+  </div>
+  <br><br>
 <div class="row">
   <div class="col-sm-10 "></div>
   <div class="col-sm-2">
